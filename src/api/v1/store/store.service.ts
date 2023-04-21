@@ -1,6 +1,6 @@
 import StoreRepository from './store.repository';
 
-export default class UserService {
+export default class StoreService {
     list = async (page, size): Promise<{ rows; count }> => {
         return new StoreRepository().findAll(page, size);
     };

@@ -13,7 +13,6 @@ export class Store extends Model<IStore> implements IStore {
     public created_at!: Date;
 
     static initModel(sequelize: Sequelize.Sequelize): typeof Store {
-        // noinspection JSUnusedLocalSymbols
         Store.init(
             {
                 _id: {

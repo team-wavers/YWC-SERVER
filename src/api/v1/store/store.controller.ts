@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import StoreService from './store.service';
 import { Result } from 'src/common/result';
 
-export default class UserController {
+export default class StoreController {
     list = async (req, res, next) => {
         const q = req.query?.q;
         const page = req.query?.page ? parseInt(req.query.page, 10) : 1;
@@ -23,11 +23,11 @@ export default class UserController {
             logger.err(JSON.stringify(e));
             logger.error(e);
 
-            result = Result.fail<Error>(e).toJson();
+            response = Result.fail<Error>(e).toJson();
         }
 
-        logger.res(httpStatus.OK, result, req);
-        res.status(httpStatus.OK).json(result);
+        logger.res(httpStatus.OK, response, req);
+        res.status(httpStatus.OK).json(response);
     };
 
 }
