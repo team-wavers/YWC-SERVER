@@ -3,8 +3,11 @@
   "description": "",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
   "scripts": {
+    "serve": "cross-env NODE_ENV=local nodemon --exec ts-node -r tsconfig-paths/register --files ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -40,6 +43,8 @@
     "sequelize": "^6.31.0",
     "short-uuid": "^4.2.2",
     "tracer": "^1.1.6",
-    "tslib": "^2.5.0"
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.5.0",
+    "xlsx": "^0.18.5"
   }
 }
