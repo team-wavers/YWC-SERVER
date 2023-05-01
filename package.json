@@ -1,0 +1,50 @@
+{
+  "name": "ywc-server",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "scripts": {
+    "serve": "cross-env NODE_ENV=local nodemon --exec ts-node -r tsconfig-paths/register --files ./src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lightpurple/YWC-SERVER.git"
+  },
+  "author": "lightpurple",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lightpurple/YWC-SERVER/issues"
+  },
+  "homepage": "https://github.com/lightpurple/YWC-SERVER#readme",
+  "dependencies": {
+    "app-root-path": "^3.1.0",
+    "assert": "^2.0.0",
+    "assert-fine": "^2.1.0",
+    "bcrypt": "^5.1.0",
+    "bluebird": "^3.7.2",
+    "cls-rtracer": "^2.6.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-http-context": "^1.2.4",
+    "fs": "^0.0.1-security",
+    "http-status": "^1.6.2",
+    "lodash": "^4.17.21",
+    "mysql2": "^3.2.1",
+    "os": "^0.1.2",
+    "path": "^0.12.7",
+    "process": "^0.11.10",
+    "request-ip": "^3.3.0",
+    "sequelize": "^6.31.0",
+    "short-uuid": "^4.2.2",
+    "tracer": "^1.1.6",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.5.0",
+    "xlsx": "^0.18.5"
+  }
+}
