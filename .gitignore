@@ -4,3 +4,4 @@ package-lock.json
 yarn.lock
 logs
 pm2-config.json
+dist

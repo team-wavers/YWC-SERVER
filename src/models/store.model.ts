@@ -8,6 +8,9 @@ export class Store extends Model<IStore> implements IStore {
     public number?: string;
     public category?: string;
     public phone?: string;
+    public address?: string;
+    public latitude?: number;
+    public longitude?: number;
     public deleted_at?: Date;
     public updated_at?: Date;
     public created_at!: Date;
@@ -39,6 +42,14 @@ export class Store extends Model<IStore> implements IStore {
                 },
                 address: {
                     type: DataTypes.STRING(255),
+                    allowNull: true,
+                },
+                latitude: {
+                    type: DataTypes.DECIMAL(10, 8),
+                    allowNull: true,
+                },
+                longitude: {
+                    type: DataTypes.DECIMAL(11, 8),
                     allowNull: true,
                 },
                 deleted_at: {
