@@ -3,17 +3,17 @@ import { DataTypes, Model } from 'sequelize';
 import { IStore } from '../@types/store';
 
 export class Store extends Model<IStore> implements IStore {
-    _id!: number;
-    name?: string;
-    number?: string;
-    category?: string;
-    phone?: string;
-    address?: string;
-    latitude?: number;
-    longitude?: number;
-    deleted_at?: Date;
-    updated_at?: Date;
-    created_at!: Date;
+    declare _id: number;
+    declare name?: string;
+    declare number?: string;
+    declare category?: string;
+    declare phone?: string;
+    declare address?: string;
+    declare latitude?: number;
+    declare longitude?: number;
+    declare deleted_at?: Date;
+    declare updated_at?: Date;
+    declare created_at: Date;
 
     static initModel(sequelize: Sequelize.Sequelize): typeof Store {
         Store.init(

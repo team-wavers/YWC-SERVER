@@ -1,4 +1,4 @@
-import { Store } from 'src/models/store.model';
+import { Store } from '../models/store.model';
 import xlsx from 'xlsx';
 
 export const excelToMysql = async (file: string) => {

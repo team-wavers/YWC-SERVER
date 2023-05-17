@@ -1,7 +1,7 @@
-import logger from 'src/lib/logger';
+import logger from '../../../lib/logger';
 import httpStatus from 'http-status';
 import MockService from './mock.service';
-import { Result } from 'src/common/result';
+import { Result } from '../../../common/result';
 
 export default class MockController {
     storeList = async (req, res, next) => {

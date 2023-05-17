@@ -1,4 +1,4 @@
-import { Store } from '@/models/store.model';
+import { Store } from '../../../models/store.model';
 import StoreRepository from './store.repository';
 import sequelize from 'sequelize';
 

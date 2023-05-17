@@ -2,7 +2,7 @@
   "name": "ywc-server",
   "description": "",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "devDependencies": {
     "cross-env": "^7.0.3",
     "puppeteer": "^20.2.0"

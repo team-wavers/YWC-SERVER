@@ -1,7 +1,7 @@
-import logger from 'src/lib/logger';
+import logger from '../../../lib/logger';
 import httpStatus from 'http-status';
 import StoreService from './store.service';
-import { Result } from 'src/common/result';
+import { Result } from '../../../common/result';
 
 export default class StoreController {
     list = async (req, res, next) => {

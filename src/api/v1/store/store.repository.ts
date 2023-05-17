@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { Store } from 'src/models/store.model';
+import { Store } from '../../../models/store.model';
 
 export default class StoreRepository {
 	/**
