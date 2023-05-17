@@ -2,9 +2,10 @@
   "name": "ywc-server",
   "description": "",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "puppeteer": "^20.2.0"
   },
   "scripts": {
     "serve": "cross-env NODE_ENV=local nodemon --exec ts-node -r tsconfig-paths/register --files ./src/app.ts",
@@ -45,6 +46,7 @@
     "tracer": "^1.1.6",
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.5.0",
+    "typescript": "^5.0.4",
     "xlsx": "^0.18.5"
   }
 }

@@ -3,14 +3,17 @@ import { DataTypes, Model } from 'sequelize';
 import { IStore } from '../@types/store';
 
 export class Store extends Model<IStore> implements IStore {
-    public _id!: number;
-    public name?: string;
-    public number?: string;
-    public category?: string;
-    public phone?: string;
-    public deleted_at?: Date;
-    public updated_at?: Date;
-    public created_at!: Date;
+    declare _id: number;
+    declare name?: string;
+    declare number?: string;
+    declare category?: string;
+    declare phone?: string;
+    declare address?: string;
+    declare latitude?: number;
+    declare longitude?: number;
+    declare deleted_at?: Date;
+    declare updated_at?: Date;
+    declare created_at: Date;
 
     static initModel(sequelize: Sequelize.Sequelize): typeof Store {
         Store.init(
@@ -39,6 +42,14 @@ export class Store extends Model<IStore> implements IStore {
                 },
                 address: {
                     type: DataTypes.STRING(255),
+                    allowNull: true,
+                },
+                latitude: {
+                    type: DataTypes.DECIMAL(12, 8),
+                    allowNull: true,
+                },
+                longitude: {
+                    type: DataTypes.DECIMAL(12, 8),
                     allowNull: true,
                 },
                 deleted_at: {

@@ -1,7 +1,7 @@
-import logger from 'src/lib/logger';
+import logger from '../../../lib/logger';
 import httpStatus from 'http-status';
 import StoreService from './store.service';
-import { Result } from 'src/common/result';
+import { Result } from '../../../common/result';
 
 export default class StoreController {
     list = async (req, res, next) => {
@@ -19,6 +19,27 @@ export default class StoreController {
                 result = await new StoreService().list(page, size);
                 response = Result.ok<JSON>(result).toJson();
             }
+        } catch (e: any) {
+            logger.err(JSON.stringify(e));
+            logger.error(e);
+
+            response = Result.fail<Error>(e).toJson();
+        }
+
+        logger.res(httpStatus.OK, response, req);
+        res.status(httpStatus.OK).json(response);
+    };
+
+    nearbyList = async (req, res, next) => {
+        const longitude = req.query?.longitude;
+        const latitude = req.query?.latitude;
+        const distance = req.query?.distance ? parseInt(req.query?.distance, 10) : 1000;
+        let result;
+        let response;
+
+        try {
+            result = await new StoreService().nearbyList({longitude, latitude, distance});
+            response = Result.ok<JSON>(result).toJson();
         } catch (e: any) {
             logger.err(JSON.stringify(e));
             logger.error(e);
