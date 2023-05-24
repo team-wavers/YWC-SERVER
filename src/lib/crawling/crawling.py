@@ -30,7 +30,7 @@ webdriver_service = Service('./chromedriver.exe')  # 웹 드라이버 경로 설
 webdriver_options = Options()
 webdriver_options.add_argument('window-size=1600x900')
 driver = webdriver.Chrome(service=webdriver_service, options=webdriver_options)
-#URLS 검색후첫링크,주소값,바로나온주소값
+#URLS 검색후첫링크,주소값
 VALUES = ["C6RjW",
         "#app-root > div > div > div > div:nth-child(6) > div > div.place_section.no_margin.vKA6F > div > div > div.O8qbU.tQY7D > div > a > span.LDgIH"
         ]
@@ -61,6 +61,8 @@ for row in result:
             EC.presence_of_element_located((By.CSS_SELECTOR, VALUES[1]))
         )
         address = driver.find_element(By.CSS_SELECTOR, VALUES[1]).text
+        if(address[:2]!="전남"):
+            continue
         driver.switch_to.default_content()
     except:
     #검색 후 여러값들이 나오지 않는 경우 바로 나왔는지 아니면 없는지 확인
@@ -68,6 +70,8 @@ for row in result:
             driver.switch_to.default_content()
             driver.switch_to.frame("entryIframe")
             address = driver.find_element(By.CSS_SELECTOR, VALUES[1]).text
+            if(address[:2]!="전남"):
+                continue
         except:
             continue
         
