@@ -3,8 +3,8 @@ import StoreRepository from './store.repository';
 import sequelize from 'sequelize';
 import { assertNotNull } from '../../../lib/utils';
 import ApiError from '../../../common/api.error';
-import ApiCodes from '@/common/api.codes';
-import ApiMessages from '@/common/api.messages';
+import ApiCodes from '../../../common/api.codes';
+import ApiMessages from '../../../common/api.messages';
 
 export default class StoreService {
     list = async (page, size): Promise<{ rows; count }> => {
