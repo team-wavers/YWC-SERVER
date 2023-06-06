@@ -125,7 +125,7 @@ describe(`/v1/stores API Test`, async() => {
 				expect(res.body).to.have.keys(responseFailKeys);
 				expect(res.body.code).to.equal(ApiCodes.BAD_REQUEST);
 				expect(res.body.message).to.equal(ApiMessages.BAD_REQUEST);
-				expect(res.body.result).to.be.a('object');
+				expect(res.body.detail).to.be.a('object');
         });
 
     });
