@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import short from 'short-uuid';
 import logger from './logger';
 import { Model } from 'sequelize';
