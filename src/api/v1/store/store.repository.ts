@@ -21,29 +21,19 @@ export default class StoreRepository {
     }
 
     public search(q, page, size, filter): Promise<{ rows; count }> {
-        let where;
-        if (filter !== undefined) {
-            where = {
-                name: {
-                    [Op.like]: `%${q}%`,
-                },
-                deleted_at: {
-                    [Op.eq]: null,
-                },
+        let where = {
+            name: {
+                [Op.like]: `%${q}%`,
+            },
+            deleted_at: {
+                [Op.eq]: null,
+            },
+            ...(filter !== undefined && {
                 address: {
                     [Op.like]: `%${filter}%`,
                 },
-            };
-        } else {
-            where = {
-                name: {
-                    [Op.like]: `%${q}%`,
-                },
-                deleted_at: {
-                    [Op.eq]: null,
-                },
-            };
-        }
+            }),
+        };
 
         return Store.findAndCountAll({
             where,
