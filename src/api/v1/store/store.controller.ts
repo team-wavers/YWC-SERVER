@@ -8,13 +8,13 @@ export default class StoreController {
         const q = req.query?.q;
         const page = req.query?.page ? parseInt(req.query.page, 10) : 1;
         const size = req.query?.size ? parseInt(req.query?.size, 10) : 15;
-        const filter = req.query?.filter;
+        const city = req.query?.city;
         let result;
         let response;
 
         try {
             if (q) {
-                result = await new StoreService().search(q, page, size, filter);
+                result = await new StoreService().search(q, page, size, city);
                 response = Result.ok<JSON>(result).toJson();
             } else {
                 result = await new StoreService().list(page, size);

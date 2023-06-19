@@ -20,7 +20,7 @@ export default class StoreRepository {
         });
     }
 
-    public search(q, page, size, filter): Promise<{ rows; count }> {
+    public search(q, page, size): Promise<{ rows; count }> {
         let where = {
             name: {
                 [Op.like]: `%${q}%`,
@@ -28,11 +28,27 @@ export default class StoreRepository {
             deleted_at: {
                 [Op.eq]: null,
             },
-            ...(filter !== undefined && {
-                address: {
-                    [Op.like]: `%${filter}%`,
-                },
-            }),
+        };
+
+        return Store.findAndCountAll({
+            where,
+            limit: size,
+            offset: size * (page - 1),
+            order: [["_id", "ASC"]],
+        });
+    }
+
+    public searchcity(q, page, size, city): Promise<{ rows; count }> {
+        let where = {
+            name: {
+                [Op.like]: `%${q}%`,
+            },
+            deleted_at: {
+                [Op.eq]: null,
+            },
+            address: {
+                [Op.like]: `%${city}%`,
+            },
         };
 
         return Store.findAndCountAll({

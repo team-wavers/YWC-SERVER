@@ -11,8 +11,12 @@ export default class StoreService {
         return new StoreRepository().findAll(page, size);
     };
 
-    search = async (q, page, size, filter): Promise<{ rows; count }> => {
-        return new StoreRepository().search(q, page, size, filter);
+    search = async (q, page, size, city): Promise<{ rows; count }> => {
+        if (city !== undefined) {
+            return new StoreRepository().searchcity(q, page, size, city);
+        } else {
+            return new StoreRepository().search(q, page, size);
+        }
     };
 
     nearbyList = async ({
