@@ -100,7 +100,6 @@ describe(`/v1/stores API Test`, async () => {
         });
         //도시필터링 기능 관련테스트코드
         it(`city를 지정할 경우`, async () => {
-            const storeName = cache.get("store_name");
             const cities = [
                 "강진",
                 "목포",
@@ -125,25 +124,30 @@ describe(`/v1/stores API Test`, async () => {
                 "진도",
                 "신안",
             ];
-            for (const city of cities) {
+            const testcities = [];
+            for (let i = 0; i < 5; i++) {
+                testcities.push(faker.helpers.arrayElement(cities));
+            }
+            for (const city of testcities) {
                 const res = await request(app)
                     .get("/v1/stores")
                     .set("Accept", "application/json")
                     .query({
-                        q: storeName,
                         city: city,
                     });
-
                 expect(res.body).to.have.keys(responseSuccessKeys);
                 expect(res.body.code).to.equal(ApiCodes.OK);
                 expect(res.body.message).to.equal(ApiMessages.OK);
                 expect(res.body.result).to.be.a("object");
                 expect(res.body.result.rows).to.be.a("array");
+                expect(res.body.result.rows.length).to.equal(15);
 
-                if (res.body.result.rows.length > 0) {
-                    const address = res.body.result.rows[0].address;
+                const addresses = res.body.result.rows.map(
+                    (row) => row.address
+                );
+                addresses.forEach((address) => {
                     expect(address).to.include(city);
-                }
+                });
             }
         });
     });
