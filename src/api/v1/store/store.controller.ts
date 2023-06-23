@@ -17,7 +17,7 @@ export default class StoreController {
                 result = await new StoreService().search(q, page, size, city);
                 response = Result.ok<JSON>(result).toJson();
             } else {
-                result = await new StoreService().list(page, size);
+                result = await new StoreService().list(page, size, city);
                 response = Result.ok<JSON>(result).toJson();
             }
         } catch (e: any) {

@@ -7,13 +7,17 @@ import ApiCodes from "../../../common/api.codes";
 import ApiMessages from "../../../common/api.messages";
 
 export default class StoreService {
-    list = async (page, size): Promise<{ rows; count }> => {
-        return new StoreRepository().findAll(page, size);
+    list = async (page, size, city): Promise<{ rows; count }> => {
+        if (city !== undefined) {
+            return new StoreRepository().findAllCity(page, size, city);
+        } else {
+            return new StoreRepository().findAll(page, size);
+        }
     };
 
     search = async (q, page, size, city): Promise<{ rows; count }> => {
         if (city !== undefined) {
-            return new StoreRepository().searchcity(q, page, size, city);
+            return new StoreRepository().searchCity(q, page, size, city);
         } else {
             return new StoreRepository().search(q, page, size);
         }

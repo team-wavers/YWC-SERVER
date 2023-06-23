@@ -19,6 +19,23 @@ export default class StoreRepository {
             order: [["_id", "ASC"]],
         });
     }
+    public findAllCity(page, size, city): Promise<{ rows; count }> {
+        let where = {
+            deleted_at: {
+                [Op.eq]: null,
+            },
+            address: {
+                [Op.like]: `%${city}%`,
+            },
+        };
+
+        return Store.findAndCountAll({
+            where,
+            limit: size,
+            offset: size * (page - 1),
+            order: [["_id", "ASC"]],
+        });
+    }
 
     public search(q, page, size): Promise<{ rows; count }> {
         let where = {
@@ -38,7 +55,7 @@ export default class StoreRepository {
         });
     }
 
-    public searchcity(q, page, size, city): Promise<{ rows; count }> {
+    public searchCity(q, page, size, city): Promise<{ rows; count }> {
         let where = {
             name: {
                 [Op.like]: `%${q}%`,
