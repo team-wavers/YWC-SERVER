@@ -2,7 +2,7 @@ name: TEST CODE CI
 
 on:
     pull_request:
-        branches: [develope]
+        branches: [develop]
 
 jobs:
     build:
