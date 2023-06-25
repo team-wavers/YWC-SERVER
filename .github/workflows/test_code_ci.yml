@@ -24,8 +24,6 @@ jobs:
 
             - name: Cancel pull request on test failure
               if: ${{ job.status == 'failure' }}
-              uses: jessfraz/branch-cleanup-action@1.2.0
+              uses: superbrothers/close-pull-request@v3
               with:
-                  branch: ${{ github.head_ref }}
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  force: true
+                  comment: "테스트 코드 실행이 실패했습니다! 다시 확인해주세요."
