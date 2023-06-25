@@ -10,9 +10,9 @@ export default class StoreService {
     list = async (page, size, city): Promise<{ rows; count }> => {
         if (city !== undefined) {
             return new StoreRepository().findAllCity(page, size, city);
-        } else {
-            return new StoreRepository().findAll(page, size);
-        }
+        } //else {
+        //     return new StoreRepository().findAll(page, size);
+        // }
     };
 
     search = async (q, page, size, city): Promise<{ rows; count }> => {
