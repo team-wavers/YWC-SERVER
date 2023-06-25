@@ -20,10 +20,24 @@ jobs:
               run: npm install
 
             - name: Run tests
-              run: npm run test
+              run: npm test
 
-            - name: Cancel pull request on test failure
-              if: ${{ job.status == 'failure' }}
+            - name: Check for Test Failures
+              id: check-test-failures
+              run: |
+                  test_result=$(npm test --json)
+                  echo "$test_result" > test-result.json
+                  if grep -q "\"failure\": true" test-result.json; then
+                    echo "Tests failed. Cancelling Pull Request..."
+                    echo "::set-output name=cancel-pr::true"
+                  else
+                    echo "Tests passed. Continuing with Pull Request..."
+                    echo "::set-output name=cancel-pr::false"
+                  fi
+
+            - name: Cancel Pull Request
+              if: steps.check-test-failures.outputs.cancel-pr == 'true'
               uses: superbrothers/close-pull-request@v3
               with:
-                  comment: "테스트 코드 실행이 실패했습니다! 다시 확인해주세요."
+                  comment: "Tests failed. Pull Request cancelled."
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
