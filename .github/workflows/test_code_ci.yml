@@ -1,0 +1,31 @@
+name: TEST CODE CI
+
+on:
+    pull_request:
+        branches: [develope]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "14"
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run tests
+              run: npm run test
+
+            - name: Cancel pull request on test failure
+              if: ${{ job.status == 'failure' }}
+              uses: peter-evans/branch-cleanup-action@1.2.0
+              with:
+                  branch: ${{ github.head_ref }}
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  force: true
