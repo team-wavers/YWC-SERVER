@@ -24,7 +24,7 @@ jobs:
 
             - name: Cancel pull request on test failure
               if: ${{ job.status == 'failure' }}
-              uses: peter-evans/branch-cleanup-action@1.2.0
+              uses: jessfraz/branch-cleanup-action@1.2.0
               with:
                   branch: ${{ github.head_ref }}
                   token: ${{ secrets.GITHUB_TOKEN }}
