@@ -20,7 +20,7 @@ function getOrigins() {
 // https://1004lucifer.blogspot.com/2019/04/axios-response-headers-content.html
 app.use(
     cors({
-        origin: getOrigins(),
+        origin: env.mode.prod ? getOrigins() : '*',
         exposedHeaders: ['Content-Disposition'],
         credentials: true,
     })

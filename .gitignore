@@ -5,3 +5,4 @@ yarn.lock
 logs
 pm2-config.json
 dist
+yarn-error.log
