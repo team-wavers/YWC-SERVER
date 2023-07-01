@@ -17,6 +17,7 @@ jobs:
                 env: # 사용할 서비스의 환경설정
                     MYSQL_USER: ${{ secrets.MYSQL_USER }}
                     MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+                    MYSQL_ROOR_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
                     MYSQL_SCHEMA: ${{ secrets.MYSQL_SCHEMA }}
                 ports: # 열어줄 포트, 8080:3306 형태로도 가능
                     - 3306
