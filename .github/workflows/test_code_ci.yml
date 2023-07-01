@@ -44,20 +44,17 @@ jobs:
                   sudo service mysql start
                   mysql -uroot -proot -e "CREATE DATABASE ywc"
                   mysql -uroot -proot -e "SHOW DATABASES"
-            - name: Make .env file # 새로운 액션의 이름
-              uses: SpicyPizza/create-envfile@v1 # .env파일을 만들어주는 액션
-              with: # .env에 들어갈 값
-                  # 아래의 $는 레포지토리 secret에 저장해놓은 값을 사용
-                  # $은 위에서 설정한 값을 가져와서 3306과 매칭되는 포트값을 넣는 것
-                  envkey_MYSQL_HOST: $
-                  envkey_MYSQL_PORT: $
-                  envkey_MYSQL_USERNAME: $
-                  envkey_MYSQL_PASSWORD: $
-                  envkey_MYSQL_SCHEMA: $
-                  envkey_APP_NAME: $
-                  envkey_APP_PORT: $
-                  envkey_APP_CORS_ORIGINS: $
-                  envkey_APP_WEB_URL: $
+            - name: Make .env.test file
+              run: |
+                echo "MYSQL_HOST=$" >> .env.test
+                echo "MYSQL_PORT=$" >> .env.test
+                echo "MYSQL_USERNAME=$" >> .env.test
+                echo "MYSQL_PASSWORD=$" >> .env.test
+                echo "MYSQL_SCHEMA=$" >> .env.test
+                echo "APP_NAME=$" >> .env.test
+                echo "APP_PORT=$" >> .env.test
+                echo "APP_CORS_ORIGINS=$" >> .env.test
+                echo "APP_WEB_URL=$" >> .env.test
             - name: install node modules && test # 테스트를 돌릴 액션
               run: |
                   sudo service mysql restart
