@@ -55,6 +55,8 @@ jobs:
                 echo "APP_PORT=$" >> .env.test
                 echo "APP_CORS_ORIGINS=$" >> .env.test
                 echo "APP_WEB_URL=$" >> .env.test
+                cp .env.test .env.local
+                mkdir logs
             - name: install node modules && test # 테스트를 돌릴 액션
               run: |
                   sudo service mysql restart
