@@ -15,10 +15,9 @@ jobs:
             mysql: # 사용할 서비스 명
                 image: mysql:5.7 # 사용할 서비스의 이미지(도커 개념 기반)
                 env: # 사용할 서비스의 환경설정
-                    MYSQL_USER: test
-                    MYSQL_PASSWORD: test
-                    MYSQL_ROOT_PASSWORD: root
-                    MYSQL_DATABASE: ywc
+                    MYSQL_USER: $
+                    MYSQL_PASSWORD: $
+                    MYSQL_SCHEMA: $
                 ports: # 열어줄 포트, 8080:3306 형태로도 가능
                     - 3306
                 options: >- # 서비스에 걸어줄 옵션
@@ -73,7 +72,7 @@ jobs:
             - name: if fail # 만약 실패했을 때의 설정
               uses: actions/github-script@v3 # 커스텀 스크립트를 사용하게 해주는 액션
               with: # 커스텀 스크립트 작성란
-                  github-token: $ # 깃허브 토큰으로 PR을 close시킴
+                  GIT_TOKEN: $ # 깃허브 토큰으로 PR을 close시킴
                   script: |
                       const ref = "$"
                       const pull_number = Number(ref.split("/")[2])
