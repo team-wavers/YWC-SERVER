@@ -27,16 +27,16 @@ jobs:
             --health-timeout=5s
             --health-retries=3
 
-        strategy:  # 가상머신 안에서 사용할 작업환경
-          matrix:
-            node-version: [14.x]  # node 12버전을 적용해서 action (타버전 적용가능)
-        steps:  # 실질적인 작업 순서를 정하는 곳
-          - uses: actions/checkout@v2  # 사용할 액션을 정의하는 곳
-          - name: Use Node.js $ # 사용할 액션의 이름을 정의
-            uses: actions/setup-node@v1 # node 액션을 사용할 것이다.
-            with:  # 액션에 필요한 파라미터들을 쓰는 곳
-              node-version: $ # 위의 strategy에 적용한 노드의 버전을 액션에서 가져온다.
-          - name: verify MySQL connection from host
+      strategy:  # 가상머신 안에서 사용할 작업환경
+        matrix:
+          node-version: [14.x]  # node 12버전을 적용해서 action (타버전 적용가능)
+      steps:  # 실질적인 작업 순서를 정하는 곳
+        - uses: actions/checkout@v2  # 사용할 액션을 정의하는 곳
+        - name: Use Node.js $ # 사용할 액션의 이름을 정의
+          uses: actions/setup-node@v1 # node 액션을 사용할 것이다.
+          with:  # 액션에 필요한 파라미터들을 쓰는 곳
+            node-version: $ # 위의 strategy에 적용한 노드의 버전을 액션에서 가져온다.
+        - name: verify MySQL connection from host
           # 아래는 실행문, cli에 입력하듯이 명령어를 작성하면 된다.
       run: |
             mysql --version
@@ -66,7 +66,7 @@ jobs:
             npm test
           env: # 테스트시 필요한 환경설정
             CI: true # 지금 액션이 CI인 것을 명시
-     # 아래는 데이터베이스 환경 설정
+      # 아래는 데이터베이스 환경 설정
             MYSQL_SCHEMA: $
             MYSQL_USERNAME: $
             MYSQL_PASSWORD: $
