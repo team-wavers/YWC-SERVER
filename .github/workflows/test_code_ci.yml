@@ -72,7 +72,7 @@ jobs:
             - name: if fail # 만약 실패했을 때의 설정
               uses: actions/github-script@v3 # 커스텀 스크립트를 사용하게 해주는 액션
               with: # 커스텀 스크립트 작성란
-                  GIT_TOKEN: $ # 깃허브 토큰으로 PR을 close시킴
+                  github-token: ${{ secrets.GIT_TOKEN }} # 깃허브 토큰으로 PR을 close시킴
                   script: |
                       const ref = "$"
                       const pull_number = Number(ref.split("/")[2])
