@@ -74,26 +74,27 @@ jobs:
               with:
                 github-token: ${{ secrets.GIT_TOKEN }}
                 script: |
-                  const ref = "${{ github.event.pull_request.head.ref }}";
+                  const ref = "test/ci";
                   const pull_number = Number(ref.split("/")[2]);
-                  const { data: reviews } = await github.pulls.listReviews({
-                    ...context.repo,
-                    pull_number,
-                  });
-                  const existingReview = reviews.find((review) => review.user.login === 'github-actions[bot]');
-                  if (existingReview) {
-                    await github.pulls.createReview({
+                  if (!isNaN(pull_number)) {
+                    const { data: reviews } = await github.pulls.listReviews({
                       ...context.repo,
                       pull_number,
-                      review_id: existingReview.id,
-                      body: '코드를 다시 확인해주세요.',
-                      event: 'REQUEST_CHANGES',
+                    });
+                    const existingReview = reviews.find((review) => review.user.login === 'github-actions[bot]');
+                    if (existingReview) {
+                      await github.pulls.createReview({
+                        ...context.repo,
+                        pull_number,
+                        review_id: existingReview.id,
+                        body: '코드를 다시 확인해주세요.',
+                        event: 'REQUEST_CHANGES',
+                      });
+                    }
+                    await github.pulls.update({
+                      ...context.repo,
+                      pull_number,
+                      state: 'closed',
                     });
                   }
-                  await github.pulls.update({
-                    ...context.repo,
-                    pull_number,
-                    state: 'closed',
-                  });
-              if: failure()
 
