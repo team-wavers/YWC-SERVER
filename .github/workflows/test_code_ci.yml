@@ -5,7 +5,7 @@ name: Test_Code_CI
 # 아래의 명령어는 모든 브랜치에 한해서 PR감지 (브랜치 지정할 수 있음)
 on: 
     pull_request:
-          branch: [develop]
+          branch: [feature/ci]
 
 # 작업단위. 실질적인 github action이 실행되는 곳
 jobs:
