@@ -51,7 +51,7 @@ jobs:
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
                   mysql -uroot -proot -e "CREATE DATABASE ywc"
-                  mysql -uroot -proot -e "${{ secrets.createTable }}"
+                  mysql -uroot -proot -e "${{ secrets.CREATETABLE }}"
                   mysql -uroot -proot -e "SHOW DATABASES"
 
             - name: Make .env file
@@ -74,7 +74,6 @@ jobs:
                   cp ${{ github.workspace }}/.env.test ${{ github.workspace }}/.env.local
                   sudo cat ${{ github.workspace }}/.env.test
                   npm install
-                  npm install -g nodemon
                   npm test
               env:
                   CI: true
