@@ -32,7 +32,7 @@ jobs:
                   mkdir logs
                   mysql --version
                   sudo service mysql start
-                 # mysql -u test -proot ywc < data.sql
+                  mysql -u test -proot ywc < data.sql
                   mysql -u test -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
               uses: SpicyPizza/create-envfile@v2
@@ -71,7 +71,7 @@ jobs:
                             ...context.repo,
                             pull_number,
                             review_id: existingReview.id,
-                            body: '코드를 다시 확인해주세요.',
+                            body: '코드를 다시 확인해주세요.!',
                             event: 'REQUEST_CHANGES',
                           });
                         }
