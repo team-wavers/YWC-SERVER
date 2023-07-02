@@ -35,6 +35,8 @@ jobs:
             - name: Start MySQL service
               run: |
                   mysql --version
+                  sudo apt update
+                  sudo apt install mysql-server
                   systemctl status mysql
                   sudo systemctl start mysql
             - name: MySQL connection
