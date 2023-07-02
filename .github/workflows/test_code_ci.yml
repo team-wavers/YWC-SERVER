@@ -35,9 +35,8 @@ jobs:
             - name: Start MySQL service
               run: |
                   mysql --version
+                  systemctl status mysql
                   sudo systemctl start mysql
-            - name: Check MySQL service status
-              run: systemctl status mysql
             - name: MySQL connection
               run: |
                   mkdir logs
