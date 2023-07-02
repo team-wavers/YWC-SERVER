@@ -71,7 +71,7 @@ jobs:
             - name: Install dependencies and run tests
               run: |
                   sudo service mysql restart
-                  cp .env.test .env.local
+                  cp ${{ github.workspace }}/.env.test ${{ github.workspace }}/.env.local
                   npm install
                   npm install -g nodemon
                   npm run serve
