@@ -47,6 +47,7 @@ jobs:
                   mysql -uroot -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
               run: |
+                  touch .env.test
                   echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env.test
                   echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env.test
                   echo "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}" >> .env.test
