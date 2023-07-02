@@ -21,11 +21,11 @@ jobs:
                     MYSQL_SCHEMA: ywc
                 ports: # 열어줄 포트, 8080:3306 형태로도 가능
                     - 3306
-#                 options: >- # 서비스에 걸어줄 옵션
-#                     --health-cmd="mysqladmin ping"
-#                     --health-interval=10s
-#                     --health-timeout=5s
-#                     --health-retries=3
+        #                 options: >- # 서비스에 걸어줄 옵션
+        #                     --health-cmd="mysqladmin ping"
+        #                     --health-interval=10s
+        #                     --health-timeout=5s
+        #                     --health-retries=3
 
         strategy: # 가상머신 안에서 사용할 작업환경
             matrix:
@@ -43,20 +43,21 @@ jobs:
                   sudo apt-get install -y mysql-server
                   sudo service mysql start
                   mysql -uroot -proot -e "CREATE DATABASE ywc"
+                  mysql -uroot -proot ywc < data.sql
                   mysql -uroot -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
               run: |
-                echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env.test
-                echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env.test
-                echo "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}" >> .env.test
-                echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env.test
-                echo "MYSQL_SCHEMA=${{ secrets.MYSQL_SCHEMA }}" >> .env.test
-                echo "APP_NAME=${{ secrets.APP_NAME }}" >> .env.test
-                echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env.test
-                echo "APP_CORS_ORIGINS=${{ secrets.APP_CORS_ORIGINS }}" >> .env.test
-                echo "APP_WEB_URL=${{ secrets.APP_WEB_URL }}" >> .env.test
-                cp .env.test .env.local
-                mkdir logs
+                  echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env.test
+                  echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env.test
+                  echo "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}" >> .env.test
+                  echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env.test
+                  echo "MYSQL_SCHEMA=${{ secrets.MYSQL_SCHEMA }}" >> .env.test
+                  echo "APP_NAME=${{ secrets.APP_NAME }}" >> .env.test
+                  echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env.test
+                  echo "APP_CORS_ORIGINS=${{ secrets.APP_CORS_ORIGINS }}" >> .env.test
+                  echo "APP_WEB_URL=${{ secrets.APP_WEB_URL }}" >> .env.test
+                  cp .env.test .env.local
+                  mkdir logs
             - name: install node modules && test # 테스트를 돌릴 액션
               run: |
                   sudo service mysql restart
@@ -72,29 +73,28 @@ jobs:
             - name: if fail
               uses: actions/github-script@v3
               with:
-                github-token: ${{ secrets.GIT_TOKEN }}
-                script: |
-                  const ref = "test/ci";
-                  const pull_number = Number(ref.split("/")[2]);
-                  if (!isNaN(pull_number)) {
-                    const { data: reviews } = await github.pulls.listReviews({
-                      ...context.repo,
-                      pull_number,
-                    });
-                    const existingReview = reviews.find((review) => review.user.login === 'github-actions[bot]');
-                    if (existingReview) {
-                      await github.pulls.createReview({
-                        ...context.repo,
-                        pull_number,
-                        review_id: existingReview.id,
-                        body: '코드를 다시 확인해주세요.',
-                        event: 'REQUEST_CHANGES',
-                      });
-                    }
-                    await github.pulls.update({
-                      ...context.repo,
-                      pull_number,
-                      state: 'closed',
-                    });
-                  }
-
+                  github-token: ${{ secrets.GIT_TOKEN }}
+                  script: |
+                      const ref = "test/ci";
+                      const pull_number = Number(ref.split("/")[2]);
+                      if (!isNaN(pull_number)) {
+                        const { data: reviews } = await github.pulls.listReviews({
+                          ...context.repo,
+                          pull_number,
+                        });
+                        const existingReview = reviews.find((review) => review.user.login === 'github-actions[bot]');
+                        if (existingReview) {
+                          await github.pulls.createReview({
+                            ...context.repo,
+                            pull_number,
+                            review_id: existingReview.id,
+                            body: '코드를 다시 확인해주세요.',
+                            event: 'REQUEST_CHANGES',
+                          });
+                        }
+                        await github.pulls.update({
+                          ...context.repo,
+                          pull_number,
+                          state: 'closed',
+                        });
+                      }
