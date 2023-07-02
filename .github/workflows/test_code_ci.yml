@@ -33,9 +33,10 @@ jobs:
                   mysql --version
                   sudo apt-get install -y mysql-server
                   sudo service mysql start
-                  mysql -h localhost -u root -p${{ secrets.MYSQL_PASSWORD }} -e "CREATE DATABASE ywc"
-                  mysql -h localhost -u root -p${{ secrets.MYSQL_PASSWORD }} ywc < .github/workflows/data.sql
-                  mysql -h localhost -u root -p${{ secrets.MYSQL_PASSWORD }} -e "SHOW DATABASES"
+                  mysql -u root -p -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '${{ secrets.MYSQL_PASSWORD }}'";
+                  mysql -u root -p ${{ secrets.MYSQL_PASSWORD }} -e "CREATE DATABASE ywc"
+                  mysql -u root -p ${{ secrets.MYSQL_PASSWORD }} ywc < ./data.sql
+                  mysql -u root -p ${{ secrets.MYSQL_PASSWORD }} -e "SHOW DATABASES"
             - name: env 파일 셋팅
               uses: SpicyPizza/create-envfile@v2
               with:
