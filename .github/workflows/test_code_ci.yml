@@ -1,51 +1,41 @@
-# Action명, 커스텀 가능하다
 name: Test Code CI
 
-# 이벤트 감지
-# 아래의 명령어는 모든 브랜치에 한해서 PR감지 (브랜치 지정할 수 있음)
 on:
     pull_request:
         branches: [feature/ci]
 
-# 작업단위. 실질적인 github action이 실행되는 곳
 jobs:
-    build: # 작업의 이름. 커스텀 가능하다.
-        runs-on: ubuntu-latest # 가상머신 OS 설정. 버전설정, window, MacOS도 사용할 수 있다.
-        services: # 서비스할 목록들 (ex. Redis, Postgresql ...)
-            mysql: # 사용할 서비스 명
-                image: mysql:5.7 # 사용할 서비스의 이미지(도커 개념 기반)
-                env: # 사용할 서비스의 환경설정
+    build:
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:5.7
+                env:
                     MYSQL_USER: test
                     MYSQL_PASSWORD: test
                     MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
                     MYSQL_DATABASE: ywc
-                ports: # 열어줄 포트, 8080:3306 형태로도 가능
-                    - 3306
-        #                 options: >- # 서비스에 걸어줄 옵션
-        #                     --health-cmd="mysqladmin ping"
-        #                     --health-interval=10s
-        #                     --health-timeout=5s
-        #                     --health-retries=3
+                ports:
+                    - 3306:3306
 
-        strategy: # 가상머신 안에서 사용할 작업환경
+        strategy:
             matrix:
-                node-version: [18.x] # node 12버전을 적용해서 action (타버전 적용가능)
-        steps: # 실질적인 작업 순서를 정하는 곳
-            - uses: actions/checkout@v2 # 사용할 액션을 정의하는 곳
-            - name: Use Node.js $ # 사용할 액션의 이름을 정의
-              uses: actions/setup-node@v2 # node 액션을 사용할 것이다.
-              with: # 액션에 필요한 파라미터들을 쓰는 곳
-                  node-version: 18.x # 위의 strategy에 적용한 노드의 버전을 액션에서 가져온다.
+                node-version: [18.x]
+        steps:
+            - uses: actions/checkout@v2
+            - name: Use Node.js $
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 18.x
             - name: MySQL connection
-              # 아래는 실행문, 명령어를 작성하면 된다.
               run: |
                   mkdir logs
                   mysql --version
                   sudo apt-get install -y mysql-server
                   sudo service mysql start
-                  mysql -uroot -proot -e "CREATE DATABASE ywc"
-                  mysql -uroot -proot ywc < .github/workflows/data.sql
-                  mysql -uroot -proot -e "SHOW DATABASES"
+                  mysql -h localhost -u root -p${{ secrets.MYSQL_PASSWORD }} -e "CREATE DATABASE ywc"
+                  mysql -h localhost -u root -p${{ secrets.MYSQL_PASSWORD }} ywc < .github/workflows/data.sql
+                  mysql -h localhost -u root -p${{ secrets.MYSQL_PASSWORD }} -e "SHOW DATABASES"
             - name: env 파일 셋팅
               uses: SpicyPizza/create-envfile@v2
               with:
@@ -59,18 +49,12 @@ jobs:
                   envkey_APP_CORS_ORIGINS: ${{ secrets.APP_CORS_ORIGINS }}
                   envkey_APP_WEB_URL: ${{ secrets.APP_WEB_URL }}
                   file_name: .env.test
-            - name: install node modules && test # 테스트를 돌릴 액션
+            - name: install node modules && test
               run: |
-                  sudo service mysql restart
                   npm install
                   npm test
-              env: # 테스트시 필요한 환경설정
-                  CI: true # 지금 액션이 CI인 것을 명시
-                  # 아래는 데이터베이스 환경 설정
-                  MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
-                  DB_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-                  DB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-                  DB_PORT: ${{ secrets.MYSQL_PORT }}
+              env:
+                  CI: true
             - name: if fail
               uses: actions/github-script@v3
               with:
