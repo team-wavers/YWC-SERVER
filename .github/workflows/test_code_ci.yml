@@ -32,17 +32,17 @@ jobs:
                   node-version: 18
             - name: Install dependencies
               run: npm install
+            - name: Start MySQL service
+              run: sudo service mysql start
             - name: Check MySQL service status
               run: |
                   systemctl status mysql.service
-                  journalctl -xeu mysql.service
             - name: MySQL connection
               run: |
                   mkdir logs
                   mysql --version
                   sleep 10s
-                  sudo service mysql start
-                  # mysql -u test -proot ywc < data.sql
+                # mysql -u test -proot ywc < data.sql
                   mysql -u test -proot -e "SHOW DATABASES"
             - name: Set environment variables
               uses: SpicyPizza/create-envfile@v2
