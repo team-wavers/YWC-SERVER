@@ -20,13 +20,15 @@ jobs:
 
         strategy:
             matrix:
-                node-version: [18.16.0]
+                node-version: [18]
         steps:
             - uses: actions/checkout@v2
             - name: Use Node.js
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3
               with:
-                  node-version: 18.16.0
+                  node-version: 18
+            - run: |
+                  npm ci
             - name: MySQL connection
               run: |
                   mkdir logs
@@ -47,9 +49,8 @@ jobs:
                   envkey_APP_CORS_ORIGINS: ${{ secrets.APP_CORS_ORIGINS }}
                   envkey_APP_WEB_URL: ${{ secrets.APP_WEB_URL }}
                   file_name: .env.test
-            - name: install node modules && test
+            - name: test
               run: |
-                  npm install
                   npm test
               env:
                   CI: true
