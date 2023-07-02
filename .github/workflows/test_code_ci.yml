@@ -57,7 +57,7 @@ jobs:
             - name: Make .env file
               uses: SpicyPizza/create-envfile@v1
               with:
-                  envkey_MYSQL_HOST: localhost
+                  envkey_MYSQL_HOST: 127.0.0.1
                   envkey_MYSQL_PORT: 3306
                   envkey_MYSQL_USERNAME: root
                   envkey_MYSQL_PASSWORD: root
