@@ -41,7 +41,7 @@ jobs:
                   mkdir logs
                   mysql --version
                   sleep 10s
-                # mysql -u test -proot ywc < data.sql
+                  # mysql -u test -proot ywc < data.sql
                   mysql -u test -proot -e "SHOW DATABASES"
             - name: Set environment variables
               uses: SpicyPizza/create-envfile@v2
@@ -72,7 +72,9 @@ jobs:
                           ...context.repo,
                           pull_number,
                         });
-                        const existingReview = reviews.find((review) => review.user.login === 'github-actions[bot]');
+                        const existingReview = reviews.find(
+                          (review) => review.user.login === 'github-actions[bot]'
+                        );
                         if (existingReview) {
                           await github.pulls.createReview({
                             ...context.repo,
