@@ -34,7 +34,7 @@ jobs:
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
                   mysql -u root -proot -e "CREATE DATABASE ywc"
-                  mysql -u root -proot ywc < ./data.sql
+                  mysql -u root -proot ywc < data.sql
                   mysql -u root -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
               uses: SpicyPizza/create-envfile@v2
