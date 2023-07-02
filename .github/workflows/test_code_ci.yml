@@ -12,7 +12,7 @@ jobs:
                 image: mysql:5.7
                 env:
                     MYSQL_USER: test
-                    MYSQL_PASSWORD: test
+                    MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
                     MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
                     MYSQL_DATABASE: ywc
                 ports:
@@ -33,8 +33,7 @@ jobs:
                   mysql --version
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
-                  mysql -u root -proot -e "CREATE DATABASE ywc"
-                  mysql -u root -proot ywc < data.sql
+                  mysql -u test -p${{ secrets.MYSQL_PASSWORD }} ywc < data.sql
                   mysql -u root -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
               uses: SpicyPizza/create-envfile@v2
