@@ -32,6 +32,11 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v2
+              with:
+                  fetch-depth: 1
+
+            - name: List files in repository
+              run: ls -R
 
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v1
