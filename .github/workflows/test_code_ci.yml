@@ -36,7 +36,9 @@ jobs:
                   fetch-depth: 1
 
             - name: List files in repository
-              run: ls -R
+              run: |
+                  ls -R
+                  mysql_config --socket
 
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v1
