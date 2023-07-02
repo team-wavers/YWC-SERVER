@@ -36,7 +36,8 @@ jobs:
               run: |
                   mysql --version
                   sudo apt-get install -y mysql-client
-                  sudo service mysql start
+                  sudo systemctl start mysql
+                  systemctl status mysql
             - name: MySQL connection
               run: |
                   mkdir logs
