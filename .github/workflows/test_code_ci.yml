@@ -72,6 +72,7 @@ jobs:
               run: |
                   sudo service mysql restart
                   cp ${{ github.workspace }}/.env.test ${{ github.workspace }}/.env.local
+                  sudo nano ${{ github.workspace }}/.env.test
                   npm install
                   npm install -g nodemon
                   npm run serve
