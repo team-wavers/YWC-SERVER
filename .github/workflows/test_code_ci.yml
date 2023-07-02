@@ -33,13 +33,14 @@ jobs:
             - name: Install dependencies
               run: npm install
             - name: Start MySQL service
-              run: sudo service mysql start
+              run: |
+                  mysql --version
+                  sudo systemctl mysql start
             - name: Check MySQL service status
               run: systemctl status mysql.service
             - name: MySQL connection
               run: |
                   mkdir logs
-                  mysql --version
                   sleep 10s
                   # mysql -u test -proot ywc < data.sql
                   mysql -u test -proot -e "SHOW DATABASES"
