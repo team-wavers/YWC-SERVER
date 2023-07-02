@@ -74,7 +74,6 @@ jobs:
                   cp ${{ github.workspace }}/.env.test ${{ github.workspace }}/.env.local
                   npm install
                   npm install -g nodemon
-                  npm run serve
                   npm test
               env:
                   CI: true
