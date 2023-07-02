@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         services:
             mysql:
-                image: mysql:8.0
+                image: mysql:5.7
                 env:
                     MYSQL_USER: test
                     MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
@@ -35,11 +35,8 @@ jobs:
             - name: Start MySQL service
               run: |
                   mysql --version
-                  sudo apt update
-                  sudo apt install mysql-server
-                  sudo systemctl enable mysql
-                  systemctl status mysql
-                  sudo systemctl start mysql
+                  sudo apt-get install -y mysql-client
+                  sudo service mysql start
             - name: MySQL connection
               run: |
                   mkdir logs
