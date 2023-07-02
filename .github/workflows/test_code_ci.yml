@@ -31,10 +31,9 @@ jobs:
               run: |
                   mkdir logs
                   mysql --version
-                  sudo apt-get install -y mysql-client
                   sudo service mysql start
-                  mysql -u test -p${{ secrets.MYSQL_PASSWORD }} ywc < data.sql
-                  mysql -u root -proot -e "SHOW DATABASES"
+                  mysql -u test -proot ywc < data.sql
+                  mysql -u test -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
               uses: SpicyPizza/create-envfile@v2
               with:
