@@ -69,7 +69,9 @@ jobs:
             - name: Install dependencies and run tests
               run: |
                   sudo service mysql restart
+                  cp .env.test .env.local
                   npm install
+                  npm run serve
                   npm test
               env:
                   CI: true
