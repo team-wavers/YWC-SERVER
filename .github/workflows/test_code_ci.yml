@@ -18,7 +18,7 @@ jobs:
                     MYSQL_USER: test
                     MYSQL_PASSWORD: test
                     MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-                    MYSQL_SCHEMA: ywc
+                    MYSQL_DATABASE: ywc
                 ports: # 열어줄 포트, 8080:3306 형태로도 가능
                     - 3306
         #                 options: >- # 서비스에 걸어줄 옵션
@@ -39,6 +39,7 @@ jobs:
             - name: MySQL connection
               # 아래는 실행문, 명령어를 작성하면 된다.
               run: |
+                  mkdir logs
                   mysql --version
                   sudo apt-get install -y mysql-server
                   sudo service mysql start
@@ -46,19 +47,18 @@ jobs:
                   mysql -uroot -proot ywc < .github/workflows/data.sql
                   mysql -uroot -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
-              run: |
-                  touch .env.test
-                  echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env.test
-                  echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env.test
-                  echo "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}" >> .env.test
-                  echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env.test
-                  echo "MYSQL_SCHEMA=${{ secrets.MYSQL_SCHEMA }}" >> .env.test
-                  echo "APP_NAME=${{ secrets.APP_NAME }}" >> .env.test
-                  echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env.test
-                  echo "APP_CORS_ORIGINS=${{ secrets.APP_CORS_ORIGINS }}" >> .env.test
-                  echo "APP_WEB_URL=${{ secrets.APP_WEB_URL }}" >> .env.test
-                  cp .env.test .env.local
-                  mkdir logs
+              uses: SpicyPizza/create-envfile@v2
+              with:
+                  envkey_MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+                  envkey_MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+                  envkey_MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+                  envkey_MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+                  envkey_MYSQL_SCHEMA: ${{ secrets.MYSQL_SCHEMA }}
+                  envkey_APP_NAME: ${{ secrets.APP_NAME }}
+                  envkey_APP_PORT: ${{ secrets.APP_PORT }}
+                  envkey_APP_CORS_ORIGINS: ${{ secrets.APP_CORS_ORIGINS }}
+                  envkey_APP_WEB_URL: ${{ secrets.APP_WEB_URL }}
+                  file_name: .env.test
             - name: install node modules && test # 테스트를 돌릴 액션
               run: |
                   sudo service mysql restart
@@ -67,10 +67,10 @@ jobs:
               env: # 테스트시 필요한 환경설정
                   CI: true # 지금 액션이 CI인 것을 명시
                   # 아래는 데이터베이스 환경 설정
-                  MYSQL_SCHEMA: ${{ secrets.MYSQL_SCHEMA }}
-                  MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-                  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-                  MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+                  MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
+                  DB_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+                  DB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+                  DB_PORT: ${{ secrets.MYSQL_PORT }}
             - name: if fail
               uses: actions/github-script@v3
               with:
