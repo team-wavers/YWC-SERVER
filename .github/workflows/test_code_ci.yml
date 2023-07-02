@@ -32,7 +32,7 @@ jobs:
                   mkdir logs
                   mysql --version
                   sudo service mysql start
-                  mysql -u test -proot ywc < data.sql
+                #  mysql -u test -proot ywc < data.sql
                   mysql -u test -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
               uses: SpicyPizza/create-envfile@v2
