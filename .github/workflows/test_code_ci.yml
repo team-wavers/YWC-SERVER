@@ -75,7 +75,6 @@ jobs:
                   sudo cat ${{ github.workspace }}/.env.test
                   npm install
                   npm install -g nodemon
-                  npm run serve
                   npm test
               env:
                   CI: true
