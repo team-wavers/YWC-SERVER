@@ -51,7 +51,9 @@ jobs:
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
                   mysql -uroot -proot -e "CREATE DATABASE ywc"
-                  mysql -uroot -proot -e "${{ secrets.CREATETABLE }}"
+                  mysql -uroot -proot -e "USE ywc; ${{ secrets.CHECK_TABLE }}"
+                  mysql -uroot -proot -e "USE ywc; ${{ secrets.CREATE_TABLE }}"
+                  mysql -uroot -proot -e "USE ywc; ${{ secrets.INSERT_DATA }}"
                   mysql -uroot -proot -e "SHOW DATABASES"
 
             - name: Make .env file
