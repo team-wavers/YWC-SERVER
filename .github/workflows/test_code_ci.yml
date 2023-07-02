@@ -37,6 +37,7 @@ jobs:
                   mysql --version
                   sudo apt update
                   sudo apt install mysql-server
+                  sudo systemctl enable mysql
                   systemctl status mysql
                   sudo systemctl start mysql
             - name: MySQL connection
