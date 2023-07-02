@@ -2,7 +2,8 @@ name: Test Code CI
 
 on:
     pull_request:
-        branches: [feature/ci]
+        branches:
+            - feature/ci
 
 jobs:
     build:
@@ -20,22 +21,25 @@ jobs:
 
         strategy:
             matrix:
-                node-version: 
+                node-version:
                     - 18
         steps:
-            - uses: actions/checkout@v2
+            - name: Checkout code
+              uses: actions/checkout@v2
             - name: Use Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: 18
+            - name: Install dependencies
+              run: npm ci
             - name: MySQL connection
               run: |
                   mkdir logs
                   mysql --version
                   sudo service mysql start
-                #  mysql -u test -proot ywc < data.sql
+                  # mysql -u test -proot ywc < data.sql
                   mysql -u test -proot -e "SHOW DATABASES"
-            - name: env 파일 셋팅
+            - name: Set environment variables
               uses: SpicyPizza/create-envfile@v2
               with:
                   envkey_MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -48,13 +52,11 @@ jobs:
                   envkey_APP_CORS_ORIGINS: ${{ secrets.APP_CORS_ORIGINS }}
                   envkey_APP_WEB_URL: ${{ secrets.APP_WEB_URL }}
                   file_name: .env.test
-            - name: test
-              run: |
-                  npm ci
-                  npm test
+            - name: Run tests
+              run: npm test
               env:
                   CI: true
-            - name: if fail
+            - name: Handle failure
               uses: actions/github-script@v3
               with:
                   github-token: ${{ secrets.GIT_TOKEN }}
