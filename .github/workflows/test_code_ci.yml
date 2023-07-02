@@ -20,15 +20,14 @@ jobs:
 
         strategy:
             matrix:
-                node-version: [18]
+                node-version: 
+                    - 18
         steps:
             - uses: actions/checkout@v2
             - name: Use Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: 18
-            - run: |
-                  npm ci
             - name: MySQL connection
               run: |
                   mkdir logs
@@ -51,6 +50,7 @@ jobs:
                   file_name: .env.test
             - name: test
               run: |
+                  npm ci
                   npm test
               env:
                   CI: true
