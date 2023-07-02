@@ -47,16 +47,16 @@ jobs:
                   mysql -uroot -proot -e "SHOW DATABASES"
             - name: env 파일 셋팅
               run: |
-                  echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env.test
-                  echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env.test
-                  echo "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}" >> .env.test
-                  echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env.test
-                  echo "MYSQL_SCHEMA=${{ secrets.MYSQL_SCHEMA }}" >> .env.test
-                  echo "APP_NAME=${{ secrets.APP_NAME }}" >> .env.test
-                  echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env.test
-                  echo "APP_CORS_ORIGINS=${{ secrets.APP_CORS_ORIGINS }}" >> .env.test
-                  echo "APP_WEB_URL=${{ secrets.APP_WEB_URL }}" >> .env.test
-                  cp .env.test .env.local
+                  echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> ../.env.test
+                  echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> ../.env.test
+                  echo "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}" >> ../.env.test
+                  echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> ../.env.test
+                  echo "MYSQL_SCHEMA=${{ secrets.MYSQL_SCHEMA }}" >> ../.env.test
+                  echo "APP_NAME=${{ secrets.APP_NAME }}" >> ../.env.test
+                  echo "APP_PORT=${{ secrets.APP_PORT }}" >> ../.env.test
+                  echo "APP_CORS_ORIGINS=${{ secrets.APP_CORS_ORIGINS }}" >> ../.env.test
+                  echo "APP_WEB_URL=${{ secrets.APP_WEB_URL }}" >> ../.env.test
+                  cp ../.env.test ../.env.local
                   mkdir logs
             - name: install node modules && test # 테스트를 돌릴 액션
               run: |
