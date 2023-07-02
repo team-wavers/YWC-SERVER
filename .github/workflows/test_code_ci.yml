@@ -58,6 +58,7 @@ jobs:
                   envkey_APP_PORT: 3000
                   envkey_APP_CORS_ORIGINS: http://localhost:8080/
                   envkey_APP_WEB_URL: http://localhost:8080/
+                  file_name: .env.test
 
             - name: Install dependencies and run tests
               run: |
