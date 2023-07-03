@@ -9,7 +9,7 @@
   },
   "scripts": {
     "serve": "cross-env NODE_ENV=local nodemon --exec ts-node -r tsconfig-paths/register --files ./src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_ENV=test TS_NODE_FILES=true mocha --exit -timeout 3000 -r tsconfig-paths/register -r ts-node/register ./test/**/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -22,11 +22,17 @@
   },
   "homepage": "https://github.com/lightpurple/YWC-SERVER#readme",
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "app-root-path": "^3.1.0",
     "assert": "^2.0.0",
     "assert-fine": "^2.1.0",
     "bcrypt": "^5.1.0",
     "bluebird": "^3.7.2",
+    "builder-pattern": "^2.2.0",
+    "chai": "^4.3.7",
+    "chai-like": "^1.1.1",
+    "chai-subset": "^1.6.0",
+    "chai-things": "^0.2.0",
     "cls-rtracer": "^2.6.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -36,6 +42,8 @@
     "fs": "^0.0.1-security",
     "http-status": "^1.6.2",
     "lodash": "^4.17.21",
+    "memory-cache": "^0.2.0",
+    "mocha": "^10.2.0",
     "mysql2": "^3.2.1",
     "os": "^0.1.2",
     "path": "^0.12.7",
@@ -43,7 +51,9 @@
     "request-ip": "^3.3.0",
     "sequelize": "^6.31.0",
     "short-uuid": "^4.2.2",
+    "supertest": "^6.3.3",
     "tracer": "^1.1.6",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4",

@@ -18,7 +18,7 @@ import * as process from 'process';
  * Load .env file or for tests the .env.test file.
  */
 const postfix = () => {
-    const envs = [ ['prod', ''], ['dev']];
+    const envs = [ ['prod'], ['dev']];
     const env = process.env.NODE_ENV?.toLowerCase();
 
     if (!env) return '';
