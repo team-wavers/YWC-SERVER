@@ -13,12 +13,12 @@ jobs:
             mysql:
                 image: mysql:5.7
                 env:
-                    MYSQL_USER: ${{ MYSQL_USER }}
-                    MYSQL_PASSWORD: ${{ MYSQL_PASSWORD }}
-                    MYSQL_ROOT_PASSWORD: ${{ MYSQL_PASSWORD }}
-                    MYSQL_DATABASE: ${{ MYSQL_SCHEMA }}
+                    MYSQL_USER: ${{ secrets.TESTDB_USER }}
+                    MYSQL_PASSWORD: ${{ secrets.TESTDB_PASSWORD }}
+                    MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+                    MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
                 ports:
-                    - ${{ MYSQL_PORT }}
+                    - ${{ secrets.MYSQL_PORT }}
                 options: >-
                     --health-cmd="mysqladmin ping"
                     --health-interval=10s
@@ -50,24 +50,24 @@ jobs:
                   mysql --version
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
-                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "CREATE DATABASE ywc"
-                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.CHECK_DATA }}"
-                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.CREATE_TABLE }}"
-                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.INSERT_DATA }}"
-                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "SHOW DATABASES"
+                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "CREATE DATABASE ywc"
+                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.CHECK_DATA }}"
+                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.CREATE_TABLE }}"
+                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.INSERT_DATA }}"
+                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "SHOW DATABASES"
 
             - name: Make .env file
               uses: SpicyPizza/create-envfile@v1
               with:
-                  envkey_MYSQL_HOST: ${{ MYSQL_HOST }}
-                  envkey_MYSQL_PORT: ${{ MYSQL_PORT }}
-                  envkey_MYSQL_USERNAME: ${{ MYSQL_USERNAME }}
-                  envkey_MYSQL_PASSWORD: ${{ MYSQL_PASSWORD }}
-                  envkey_MYSQL_SCHEMA: ${{ MYSQL_SCHEMA }}
-                  envkey_APP_NAME: ${{ APP_NAME }}
-                  envkey_APP_PORT: ${{ APP_PORT }}
-                  envkey_APP_CORS_ORIGINS: ${{ APP_CORS_ORIGINS }}
-                  envkey_APP_WEB_URL: ${{ APP_WEB_URL }}
+                  envkey_MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+                  envkey_MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+                  envkey_MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+                  envkey_MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+                  envkey_MYSQL_SCHEMA: ${{ secrets.MYSQL_SCHEMA }}
+                  envkey_APP_NAME: ${{ secrets.APP_NAME }}
+                  envkey_APP_PORT: ${{ secrets.APP_PORT }}
+                  envkey_APP_CORS_ORIGINS: ${{ secrets.APP_CORS_ORIGINS }}
+                  envkey_APP_WEB_URL: ${{ secrets.APP_WEB_URL }}
                   file_name: .env.test
 
             - name: Install dependencies and run tests
@@ -79,10 +79,10 @@ jobs:
                   npm test
               env:
                   CI: true
-                  MYSQL_DATABASE: ${{ MYSQL_SCHEMA }}
-                  DB_USERNAME: ${{ MYSQL_USERNAME }}
-                  DB_PASSWORD: ${{ MYSQL_PASSWORD }}
-                  DB_PORT: ${{ MYSQL_PORT }}
+                  MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
+                  DB_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+                  DB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+                  DB_PORT: ${{ secrets.MYSQL_PORT }}
 
             - name: Handle failure
               uses: actions/github-script@v3
