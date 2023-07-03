@@ -51,9 +51,22 @@ jobs:
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
                   mysql -uroot -proot -e "CREATE DATABASE ywc"
-                  mysql -uroot -proot -e "USE ywc; ${{ secrets.CHECK_TABLE }};"
-                  mysql -uroot -proot -e "USE ywc; ${{ secrets.CREATE_TABLE }};"
-                  mysql -uroot -proot -e "USE ywc; ${{ secrets.INSERT_DATA }};"
+                  mysql -uroot -proot -e "USE ywc; DROP TABLE IF EXISTS `stores`;"
+                  mysql -uroot -proot -e "USE ywc; CREATE TABLE `stores` (
+  `_id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '가맹점명',
+  `number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '가맹점번호',
+  `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '업종명',
+  `phone` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '전화번호',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '주소',
+  `longitude` decimal(12,8) DEFAULT NULL,
+  `latitude` decimal(12,8) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14337 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;"
+                  mysql -uroot -proot -e "USE ywc; INSERT INTO `stores` VALUES {{ secrets.INSERT_DATA }};"
                   mysql -uroot -proot -e "SHOW DATABASES"
 
             - name: Make .env file
