@@ -1,41 +1,53 @@
-name: Test Code CI
+name: CI
 
 on:
     pull_request:
-        branches: [feature/ci]
+        branches:
+            - develop
 
 jobs:
     build:
         runs-on: ubuntu-latest
+
         services:
             mysql:
                 image: mysql:5.7
                 env:
-                    MYSQL_USER: test
-                    MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+                    MYSQL_USER: ${{ secrets.TESTDB_USER }}
+                    MYSQL_PASSWORD: ${{ secrets.TESTDB_PASSWORD }}
                     MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-                    MYSQL_DATABASE: ywc
+                    MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
                 ports:
-                    - 3306:3306
+                    - 3306
 
         strategy:
             matrix:
                 node-version: [18.x]
+
         steps:
-            - uses: actions/checkout@v2
-            - name: Use Node.js $
-              uses: actions/setup-node@v2
+            - name: Checkout repository
+              uses: actions/checkout@v2
               with:
-                  node-version: 18.x
-            - name: MySQL connection
+                  fetch-depth: 1
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+
+            - name: Verify MySQL connection from host
               run: |
-                  mkdir logs
                   mysql --version
+                  sudo apt-get install -y mysql-client
                   sudo service mysql start
-                 # mysql -u test -proot ywc < data.sql
-                  mysql -u test -proot -e "SHOW DATABASES"
-            - name: env 파일 셋팅
-              uses: SpicyPizza/create-envfile@v2
+                  mysql -uroot -proot -e "CREATE DATABASE ${{ secrets.MYSQL_SCHEMA }}"
+                  mysql -uroot -proot -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CHECK_DATA }}"
+                  mysql -uroot -proot -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CREATE_TABLE }}"
+                  mysql -uroot -proot -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.INSERT_DATA }}"
+                  mysql -uroot -proot -e "SHOW DATABASES"
+
+            - name: Make .env file
+              uses: SpicyPizza/create-envfile@v1
               with:
                   envkey_MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
                   envkey_MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
@@ -47,37 +59,37 @@ jobs:
                   envkey_APP_CORS_ORIGINS: ${{ secrets.APP_CORS_ORIGINS }}
                   envkey_APP_WEB_URL: ${{ secrets.APP_WEB_URL }}
                   file_name: .env.test
-            - name: install node modules && test
+
+            - name: Restart MySQL service
+              run: sudo service mysql restart
+
+            - name: Install dependencies and run tests
               run: |
                   npm install
                   npm test
               env:
                   CI: true
-            - name: if fail
+                  MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
+                  DB_USERNAME: $MYSQL_USER
+                  DB_PASSWORD: $MYSQL_PASSWORD
+                  DB_PORT: ${{ secrets.MYSQL_PORT }}
+
+            - name: Handle failure
               uses: actions/github-script@v3
               with:
-                  github-token: ${{ secrets.GIT_TOKEN }}
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
-                      const ref = "test/ci";
-                      const pull_number = Number(ref.split("/")[2]);
-                      if (!isNaN(pull_number)) {
-                        const { data: reviews } = await github.pulls.listReviews({
-                          ...context.repo,
-                          pull_number,
-                        });
-                        const existingReview = reviews.find((review) => review.user.login === 'github-actions[bot]');
-                        if (existingReview) {
-                          await github.pulls.createReview({
-                            ...context.repo,
-                            pull_number,
-                            review_id: existingReview.id,
-                            body: '코드를 다시 확인해주세요.',
-                            event: 'REQUEST_CHANGES',
-                          });
-                        }
-                        await github.pulls.update({
-                          ...context.repo,
-                          pull_number,
-                          state: 'closed',
-                        });
-                      }
+                      const ref = "${{ github.ref }}"
+                      const pull_number = Number(ref.split("/")[2])
+                      await github.pulls.createReview({
+                        ...context.repo,
+                        pull_number,
+                        body: "테스트코드를 다시 확인해주세요.",
+                        event: "REQUEST_CHANGES"
+                      })
+                      await github.pulls.update({
+                        ...context.repo,
+                        pull_number,
+                        state: "closed"
+                      })
+              if: failure()

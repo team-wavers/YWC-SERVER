@@ -5,6 +5,7 @@
   "main": "app.js",
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "mocha": "^10.2.0",
     "puppeteer": "^20.2.0"
   },
   "scripts": {
@@ -43,7 +44,6 @@
     "http-status": "^1.6.2",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
-    "mocha": "^10.2.0",
     "mysql2": "^3.2.1",
     "os": "^0.1.2",
     "path": "^0.12.7",
@@ -57,6 +57,7 @@
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yarn": "^1.22.19"
   }
 }
