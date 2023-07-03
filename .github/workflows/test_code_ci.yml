@@ -35,11 +35,6 @@ jobs:
               with:
                   fetch-depth: 1
 
-            - name: List files in repository
-              run: |
-                  ls -R
-                  mysql_config --socket
-
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v1
               with:
@@ -50,11 +45,11 @@ jobs:
                   mysql --version
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
-                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "CREATE DATABASE ywc"
-                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.CHECK_DATA }}"
-                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.CREATE_TABLE }}"
-                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.INSERT_DATA }}"
-                  mysql -u${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "SHOW DATABASES"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "CREATE DATABASE ${{ secrets.MYSQL_SCHEMA }}"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CHECK_DATA }}"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CREATE_TABLE }}"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.INSERT_DATA }}"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "SHOW DATABASES"
 
             - name: Make .env file
               uses: SpicyPizza/create-envfile@v1
@@ -70,19 +65,19 @@ jobs:
                   envkey_APP_WEB_URL: ${{ secrets.APP_WEB_URL }}
                   file_name: .env.test
 
+            - name: Restart MySQL service
+              run: sudo service mysql restart
+
             - name: Install dependencies and run tests
               run: |
-                  sudo service mysql restart
-                  cp ${{ github.workspace }}/.env.test ${{ github.workspace }}/.env.local
-                  sudo cat ${{ github.workspace }}/.env.test
                   npm install
                   npm test
               env:
                   CI: true
                   MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
-                  DB_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-                  DB_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-                  DB_PORT: ${{ secrets.MYSQL_PORT }}
+                  DB_USERNAME: $MYSQL_USER
+                  DB_PASSWORD: $MYSQL_PASSWORD
+                  DB_PORT: $MYSQL_PORT
 
             - name: Handle failure
               uses: actions/github-script@v3
