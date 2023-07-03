@@ -13,12 +13,12 @@ jobs:
             mysql:
                 image: mysql:5.7
                 env:
-                    MYSQL_USER: test
-                    MYSQL_PASSWORD: test
-                    MYSQL_ROOT_PASSWORD: root
-                    MYSQL_DATABASE: ywc
+                    MYSQL_USER: ${{ TESTDB_USER }}
+                    MYSQL_PASSWORD: ${{ TESTDB_PASSWORD }}
+                    MYSQL_ROOT_PASSWORD: ${{ MYSQL_PASSWORD }}
+                    MYSQL_DATABASE: ${{ MYSQL_SCHEMA }}
                 ports:
-                    - 3306
+                    - ${{ MYSQL_PORT }}
                 options: >-
                     --health-cmd="mysqladmin ping"
                     --health-interval=10s
@@ -50,24 +50,24 @@ jobs:
                   mysql --version
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
-                  mysql -uroot -proot -e "CREATE DATABASE ywc"
-                  mysql -uroot -proot -e "USE ywc; ${{ secrets.CHECK_DATA }}"
-                  mysql -uroot -proot -e "USE ywc; ${{ secrets.CREATE_TABLE }}"
-                  mysql -uroot -proot -e "USE ywc; ${{ secrets.INSERT_DATA }}"
-                  mysql -uroot -proot -e "SHOW DATABASES"
+                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "CREATE DATABASE ywc"
+                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.CHECK_DATA }}"
+                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.CREATE_TABLE }}"
+                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "USE ywc; ${{ secrets.INSERT_DATA }}"
+                  mysql -u${{ MYSQL_USERNAME }} -p${{ MYSQL_PASSWORD }} -e "SHOW DATABASES"
 
             - name: Make .env file
               uses: SpicyPizza/create-envfile@v1
               with:
-                  envkey_MYSQL_HOST: 127.0.0.1
-                  envkey_MYSQL_PORT: 3306
-                  envkey_MYSQL_USERNAME: root
-                  envkey_MYSQL_PASSWORD: root
-                  envkey_MYSQL_SCHEMA: ywc
-                  envkey_APP_NAME: MyApp
-                  envkey_APP_PORT: 3000
-                  envkey_APP_CORS_ORIGINS: http://localhost:8080/
-                  envkey_APP_WEB_URL: http://localhost:8080/
+                  envkey_MYSQL_HOST: ${{ MYSQL_HOST }}
+                  envkey_MYSQL_PORT: ${{ MYSQL_PORT }}
+                  envkey_MYSQL_USERNAME: ${{ MYSQL_USERNAME }}
+                  envkey_MYSQL_PASSWORD: ${{ MYSQL_PASSWORD }}
+                  envkey_MYSQL_SCHEMA: ${{ MYSQL_SCHEMA }}
+                  envkey_APP_NAME: ${{ APP_NAME }}
+                  envkey_APP_PORT: ${{ APP_PORT }}
+                  envkey_APP_CORS_ORIGINS: ${{ APP_CORS_ORIGINS }}
+                  envkey_APP_WEB_URL: ${{ APP_WEB_URL }}
                   file_name: .env.test
 
             - name: Install dependencies and run tests
@@ -79,10 +79,10 @@ jobs:
                   npm test
               env:
                   CI: true
-                  MYSQL_DATABASE: ywc
-                  DB_USERNAME: root
-                  DB_PASSWORD: root
-                  DB_PORT: 3306
+                  MYSQL_DATABASE: ${{ MYSQL_SCHEMA }}
+                  DB_USERNAME: ${{ MYSQL_USERNAME }}
+                  DB_PASSWORD: ${{ MYSQL_PASSWORD }}
+                  DB_PORT: ${{ MYSQL_PORT }}
 
             - name: Handle failure
               uses: actions/github-script@v3
