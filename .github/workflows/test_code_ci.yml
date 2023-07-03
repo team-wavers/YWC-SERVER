@@ -77,7 +77,7 @@ jobs:
                   MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
                   DB_USERNAME: $MYSQL_USER
                   DB_PASSWORD: $MYSQL_PASSWORD
-                  DB_PORT: $MYSQL_PORT
+                  DB_PORT: ${{ secrets.MYSQL_PORT }}
 
             - name: Handle failure
               uses: actions/github-script@v3
