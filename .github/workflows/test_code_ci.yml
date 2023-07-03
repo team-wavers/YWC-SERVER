@@ -40,11 +40,11 @@ jobs:
                   mysql --version
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
-                  mysql -h ${{ secrets.MYSQL_HOST }} -u ${{ secrets.MYSQL_USER }} -e "CREATE DATABASE ${{ secrets.MYSQL_SCHEMA }}"
-                  mysql -h ${{ secrets.MYSQL_HOST }} -u ${{ secrets.MYSQL_USER }} -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CHECK_DATA }}"
-                  mysql -h ${{ secrets.MYSQL_HOST }} -u ${{ secrets.MYSQL_USER }} -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CREATE_TABLE }}"
-                  mysql -h ${{ secrets.MYSQL_HOST }} -u ${{ secrets.MYSQL_USER }} -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.INSERT_DATA }}"
-                  mysql -h ${{ secrets.MYSQL_HOST }} -u ${{ secrets.MYSQL_USER }} -e "SHOW DATABASES"
+                  mysql -h ${{ secrets.MYSQL_HOST }} -u${{ secrets.MYSQL_USER }} -e "CREATE DATABASE ${{ secrets.MYSQL_SCHEMA }}"
+                  mysql -h ${{ secrets.MYSQL_HOST }} -u${{ secrets.MYSQL_USER }} -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CHECK_DATA }}"
+                  mysql -h ${{ secrets.MYSQL_HOST }} -u${{ secrets.MYSQL_USER }} -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CREATE_TABLE }}"
+                  mysql -h ${{ secrets.MYSQL_HOST }} -u${{ secrets.MYSQL_USER }} -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.INSERT_DATA }}"
+                  mysql -h ${{ secrets.MYSQL_HOST }} -u${{ secrets.MYSQL_USER }} -e "SHOW DATABASES"
 
             - name: Make .env file
               uses: SpicyPizza/create-envfile@v1
