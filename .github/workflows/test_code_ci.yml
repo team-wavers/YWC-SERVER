@@ -40,11 +40,11 @@ jobs:
                   mysql --version
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
-                  mysql -uroot -p $MYSQL_ROOT_PASSWORD -e "CREATE DATABASE ${{ secrets.MYSQL_SCHEMA }}"
-                  mysql -uroot -p $MYSQL_ROOT_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CHECK_DATA }}"
-                  mysql -uroot -p $MYSQL_ROOT_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CREATE_TABLE }}"
-                  mysql -uroot -p $MYSQL_ROOT_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.INSERT_DATA }}"
-                  mysql -uroot -p $MYSQL_ROOT_PASSWORD -e "SHOW DATABASES"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "CREATE DATABASE ${{ secrets.MYSQL_SCHEMA }}"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CHECK_DATA }}"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CREATE_TABLE }}"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.INSERT_DATA }}"
+                  mysql -u $MYSQL_USER -p $MYSQL_PASSWORD -e "SHOW DATABASES"
 
             - name: Make .env file
               uses: SpicyPizza/create-envfile@v1
