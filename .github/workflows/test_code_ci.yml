@@ -13,8 +13,8 @@ jobs:
             mysql:
                 image: mysql:5.7
                 env:
-                    MYSQL_USER: ${{ TESTDB_USER }}
-                    MYSQL_PASSWORD: ${{ TESTDB_PASSWORD }}
+                    MYSQL_USER: ${{ MYSQL_USER }}
+                    MYSQL_PASSWORD: ${{ MYSQL_PASSWORD }}
                     MYSQL_ROOT_PASSWORD: ${{ MYSQL_PASSWORD }}
                     MYSQL_DATABASE: ${{ MYSQL_SCHEMA }}
                 ports:
