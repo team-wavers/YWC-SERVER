@@ -19,7 +19,7 @@ jobs:
                     MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
                 ports:
                     - ${{ secrets.MYSQL_PORT }}
-                options: >-
+                options: >
                     --health-cmd="mysqladmin ping"
                     --health-interval=10s
                     --health-timeout=5s
