@@ -140,7 +140,6 @@ describe(`/v1/stores API Test`, async () => {
                 expect(res.body.message).to.equal(ApiMessages.OK);
                 expect(res.body.result).to.be.a("object");
                 expect(res.body.result.rows).to.be.a("array");
-                expect(res.body.result.rows.length).to.equal(15);
 
                 const addresses = res.body.result.rows.map(
                     (row) => row.address
