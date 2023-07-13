@@ -15,7 +15,7 @@ jobs:
                 env:
                     MYSQL_USER: ${{ secrets.TESTDB_USER }}
                     MYSQL_PASSWORD: ${{ secrets.TESTDB_PASSWORD }}
-                    MYSQL_ROOT_PASSWORD: t*5l2P1rcVH4
+                    MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
                     MYSQL_DATABASE: ${{ secrets.MYSQL_SCHEMA }}
                 ports:
                     - 3306
@@ -40,11 +40,11 @@ jobs:
                   mysql --version
                   sudo apt-get install -y mysql-client
                   sudo service mysql start
-                  mysql -uroot -p"t*5l2P1rcVH4" -e "CREATE DATABASE ${{ secrets.MYSQL_SCHEMA }}"
-                  mysql -uroot -p"t*5l2P1rcVH4" -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CHECK_DATA }}"
-                  mysql -uroot -p"t*5l2P1rcVH4" -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CREATE_TABLE }}"
-                  mysql -uroot -p"t*5l2P1rcVH4" -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.INSERT_DATA }}"
-                  mysql -uroot -p"t*5l2P1rcVH4" -e "SHOW DATABASES"
+                  mysql -uroot -proot -e "CREATE DATABASE ${{ secrets.MYSQL_SCHEMA }}"
+                  mysql -uroot -proot -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CHECK_DATA }}"
+                  mysql -uroot -proot -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.CREATE_TABLE }}"
+                  mysql -uroot -proot -e "USE ${{ secrets.MYSQL_SCHEMA }}; ${{ secrets.INSERT_DATA }}"
+                  mysql -uroot -proot -e "SHOW DATABASES"
 
             - name: Make .env file
               uses: SpicyPizza/create-envfile@v1
@@ -52,7 +52,7 @@ jobs:
                   envkey_MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
                   envkey_MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
                   envkey_MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-                  envkey_MYSQL_PASSWORD: t*5l2P1rcVH4
+                  envkey_MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
                   envkey_MYSQL_SCHEMA: ${{ secrets.MYSQL_SCHEMA }}
                   envkey_APP_NAME: ${{ secrets.APP_NAME }}
                   envkey_APP_PORT: ${{ secrets.APP_PORT }}
