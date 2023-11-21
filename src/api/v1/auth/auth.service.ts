@@ -6,7 +6,7 @@ import { assertNotNull, assertTrue } from "src/lib/utils";
 import { CookieOptions } from "express";
 
 export default class AuthService {
-    public adminLogin = async (password) => {
+    public adminSignIn = async (password) => {
         assertNotNull(
             password,
             new ApiError(ApiCodes.BAD_REQUEST, ApiMessages.BAD_REQUEST, {
@@ -28,10 +28,19 @@ export default class AuthService {
         return this.generateToken();
     };
 
-    public getCookieOptions = (): CookieOptions => {
+    public createCookieOptions = (): CookieOptions => {
         const cookieOptions: CookieOptions = {
             httpOnly: true,
             maxAge: 1000 * 60 * 30,
+        };
+        return cookieOptions;
+    };
+
+    public expireCookieOptions = (): CookieOptions => {
+        const cookieOptions: CookieOptions = {
+            httpOnly: true,
+            maxAge: 0,
+            expires: new Date(0),
         };
         return cookieOptions;
     };
