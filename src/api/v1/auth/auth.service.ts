@@ -32,6 +32,7 @@ export default class AuthService {
         const cookieOptions: CookieOptions = {
             httpOnly: true,
             maxAge: 1000 * 60 * 30,
+            domain: process.env.COOKIE_DOMAIN,
         };
         return cookieOptions;
     };
@@ -41,6 +42,7 @@ export default class AuthService {
             httpOnly: true,
             maxAge: 0,
             expires: new Date(0),
+            domain: process.env.COOKIE_DOMAIN,
         };
         return cookieOptions;
     };
