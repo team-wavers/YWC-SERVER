@@ -1,9 +1,9 @@
 import ApiError from "../../../common/api.error";
 import ApiCodes from "../../../common/api.codes";
 import ApiMessages from "../../../common/api.messages";
-import AuthRepository from "./auth.repository";
 import { assertNotNull, assertTrue } from "../../../../src/lib/utils";
 import { CookieOptions } from "express";
+import env from "../../../env";
 
 export default class AuthService {
     public adminSignIn = async (password) => {
@@ -14,9 +14,7 @@ export default class AuthService {
             })
         );
 
-        const isAdminPasswordValid = await new AuthRepository().findByPassword(
-            password
-        );
+        const isAdminPasswordValid = await this.checkAdminPassword(password);
 
         assertTrue(
             isAdminPasswordValid,
@@ -52,5 +50,12 @@ export default class AuthService {
             role: "admin",
         };
         return token;
+    };
+
+    private checkAdminPassword = async (password: string): Promise<boolean> => {
+        if (env.admin.password === password) {
+            return true;
+        }
+        return false;
     };
 }
