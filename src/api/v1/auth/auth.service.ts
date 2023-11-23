@@ -6,7 +6,7 @@ import { CookieOptions } from "express";
 import env from "../../../env";
 
 export default class AuthService {
-    public adminSignIn = async (password) => {
+    public adminSignIn = async (password): Promise<void> => {
         assertNotNull(
             password,
             new ApiError(ApiCodes.BAD_REQUEST, ApiMessages.BAD_REQUEST, {
@@ -22,15 +22,13 @@ export default class AuthService {
                 message: "Invalid password",
             })
         );
-
-        return this.generateToken();
     };
 
     public createCookieOptions = (): CookieOptions => {
         const cookieOptions: CookieOptions = {
             httpOnly: true,
             maxAge: 1000 * 60 * 30,
-            domain: process.env.COOKIE_DOMAIN,
+            domain: env.app.cookie.domain,
         };
         return cookieOptions;
     };
@@ -40,12 +38,12 @@ export default class AuthService {
             httpOnly: true,
             maxAge: 0,
             expires: new Date(0),
-            domain: process.env.COOKIE_DOMAIN,
+            domain: env.app.cookie.domain,
         };
         return cookieOptions;
     };
 
-    private generateToken = async () => {
+    public generateToken = async () => {
         const token = {
             role: "admin",
         };

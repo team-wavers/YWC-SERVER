@@ -7,11 +7,10 @@ export default class AuthController {
     adminSignIn = async (req, res, next) => {
         const password = req.body?.password;
         const cookieOptions = new AuthService().createCookieOptions();
-        let result;
         let response;
 
         try {
-            result = await new AuthService().adminSignIn(password);
+            await new AuthService().adminSignIn(password);
             response = Result.ok<JSON>().toJson();
         } catch (e: any) {
             logger.err(JSON.stringify(e));
@@ -21,13 +20,16 @@ export default class AuthController {
         }
         logger.res(httpStatus.OK, response, req);
         res.status(httpStatus.OK)
-            .cookie("admin", result, cookieOptions)
+            .cookie(
+                "admin",
+                await new AuthService().generateToken(),
+                cookieOptions
+            )
             .json(response);
     };
 
     adminSignOut = async (req, res, next) => {
         const cookieOptions = new AuthService().expireCookieOptions();
-        let result;
         let response;
 
         try {
