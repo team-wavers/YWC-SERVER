@@ -92,7 +92,6 @@ const env = {
         cookie: {
             domain: getOsEnvOptional("COOKIE_DOMAIN"),
         },
-        }
     },
 };
 
