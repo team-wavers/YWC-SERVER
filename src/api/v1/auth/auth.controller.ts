@@ -1,7 +1,7 @@
-import logger from "src/lib/logger";
+import logger from "../../../../src/lib/logger";
 import httpStatus from "http-status";
 import AuthService from "./auth.service";
-import { Result } from "src/common/result";
+import { Result } from "../../../../src/common/result";
 
 export default class AuthController {
     adminSignIn = async (req, res, next) => {
