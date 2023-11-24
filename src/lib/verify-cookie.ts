@@ -10,15 +10,19 @@ export default function verifyCookie(req, res, next) {
         const token = req.cookies.admin?.role;
 
         if (!token) {
-            throw new ApiError(ApiCodes.OK, ApiMessages.NOT_FOUND, {
+            throw new ApiError(ApiCodes.NOT_FOUND, ApiMessages.NOT_FOUND, {
                 message: "Token not found",
             });
         }
 
         if (!isTokenValid(token)) {
-            throw new ApiError(ApiCodes.OK, ApiMessages.UNAUTHORIZED, {
-                message: "Invalid token",
-            });
+            throw new ApiError(
+                ApiCodes.UNAUTHORIZED,
+                ApiMessages.UNAUTHORIZED,
+                {
+                    message: "Invalid token",
+                }
+            );
         }
 
         next();
