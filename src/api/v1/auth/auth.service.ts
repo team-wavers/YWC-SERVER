@@ -9,7 +9,7 @@ export default class AuthService {
     public adminSignIn = async (password): Promise<void> => {
         assertNotNull(
             password,
-            new ApiError(ApiCodes.BAD_REQUEST, ApiMessages.BAD_REQUEST, {
+            new ApiError(ApiCodes.OK, ApiMessages.BAD_REQUEST, {
                 message: "password are required",
             })
         );
@@ -18,7 +18,7 @@ export default class AuthService {
 
         assertTrue(
             isAdminPasswordValid,
-            new ApiError(ApiCodes.UNAUTHORIZED, ApiMessages.UNAUTHORIZED, {
+            new ApiError(ApiCodes.OK, ApiMessages.UNAUTHORIZED, {
                 message: "Invalid password",
             })
         );
