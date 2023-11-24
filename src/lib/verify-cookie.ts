@@ -1,9 +1,9 @@
 import { Result } from "../../src/common/result";
 import logger from "./logger";
 import httpStatus from "http-status";
-import ApiError from "src/common/api.error";
-import ApiCodes from "src/common/api.codes";
-import ApiMessages from "src/common/api.messages";
+import ApiError from "../../src/common/api.error";
+import ApiCodes from "../../src/common/api.codes";
+import ApiMessages from "../../src/common/api.messages";
 
 export default function verifyCookie(req, res, next) {
     try {
