@@ -7,8 +7,8 @@ export class Store extends Model<IStore> implements IStore {
     declare name?: string;
     declare number?: string;
     declare category?: string;
-    declare phone?: string;
     declare address?: string;
+    declare bank?: string;
     declare latitude?: number;
     declare longitude?: number;
     declare deleted_at?: Date;
