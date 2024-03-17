@@ -1,29 +1,35 @@
 import OpenAI from 'openai';
+import env from '../env';
 
 export default async function callchat(usermessage: string) {
-    const client = new OpenAI();
+    const client = new OpenAI({ apiKey: env.app.gptapi.key });
+    let msgResponse = '';
 
-    const assistant = await client.beta.assistants.create({
-        name: 'Math Tutor',
-        instructions:
-            'You are a personal math tutor. Write and run code to answer math questions.',
-        tools: [{ type: 'code_interpreter' }],
-        model: 'gpt-4-turbo-preview',
-    });
+    const assistant = await client.beta.assistants.retrieve(
+        'asst_FPg6Rlt9WKrgjROV07Du4joO'
+    );
     const thread = await client.beta.threads.create();
     const message = await client.beta.threads.messages.create(thread.id, {
         role: 'user',
         content: usermessage,
     });
-    const run = client.beta.threads.runs
-        .createAndStream(thread.id, {
-            assistant_id: assistant.id,
-        })
-        .on('textCreated', (text) => process.stdout.write('\nassistant > ')) //수정필요
-        .on(
-            'textDelta',
-            (textDelta, snapshot) => process.stdout.write(textDelta.value) //수정필요
-        );
+    //작업생성 확인필요
+    let run = await client.beta.threads.runs.create(thread.id, {
+        assistant_id: assistant.id,
+    });
+    while (['queued', 'in_progress', 'cancelling'].includes(run.status)) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+        run = await client.beta.threads.runs.retrieve(run.thread_id, run.id);
+    }
+    if (run.status === 'completed') {
+        const messages = await client.beta.threads.messages.list(run.thread_id);
+        for (const message of messages.data.reverse()) {
+            // console.log(`${message.role} > ${message.content[0].text.value}`);
+        }
+    } else {
+        console.log(run.status);
+    }
 
     //반환로직 필요
+    return msgResponse;
 }
