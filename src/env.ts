@@ -94,6 +94,7 @@ const env = {
         },
         gptapi: {
             key: getOsEnvOptional('OPENAI_API_KEY'),
+            assistant_id: getOsEnvOptional('OPENAI_ASSISTANT_ID'),
         },
     },
 };
