@@ -97,6 +97,12 @@ const env = {
             assistant_id: getOsEnvOptional('OPENAI_ASSISTANT_ID'),
         },
     },
+    redis: {
+        host: getOsEnv('REDIS_HOST'),
+        port: getOsEnvNumber('REDIS_PORT'),
+        username: getOsEnv('REDIS_USERNAME'),
+        password: getOsEnv('REDIS_PASSWORD'),
+    },
 };
 
 export default env;

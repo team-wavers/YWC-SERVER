@@ -1,18 +1,18 @@
 import OpenAI from 'openai';
-import env from '../env';
+import env from '../../env';
 
 export default async function callchat(usermessage: string) {
     const client = new OpenAI({ apiKey: env.app.gptapi.key });
-    let msgResponse = '';
+    const myAssistants = await client.beta.assistants.list();
 
     const thread = await client.beta.threads.create();
-    const message = await client.beta.threads.messages.create(thread.id, {
+    await client.beta.threads.messages.create(thread.id, {
         role: 'user',
         content: usermessage,
     });
     //작업생성 확인필요
     let run = await client.beta.threads.runs.create(thread.id, {
-        assistant_id: env.app.gptapi.assistant_id,
+        assistant_id: myAssistants.data[0].id,
     });
     while (['queued', 'in_progress', 'cancelling'].includes(run.status)) {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
