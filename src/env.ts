@@ -98,9 +98,8 @@ const env = {
         },
     },
     redis: {
-        host: getOsEnv('REDIS_HOST'),
         port: getOsEnvNumber('REDIS_PORT'),
-        username: getOsEnv('REDIS_USERNAME'),
+        host: getOsEnv('REDIS_HOST'),
         password: getOsEnv('REDIS_PASSWORD'),
     },
 };

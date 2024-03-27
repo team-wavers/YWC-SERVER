@@ -5,4 +5,4 @@ export const path = '/rank';
 export const router = Router();
 
 router.get('/', new RankController().getRank);
-router.post('/set', new RankController().setRank);
+router.get('/set', new RankController().setRank);
