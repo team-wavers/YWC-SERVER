@@ -1,14 +1,14 @@
-import * as Sequelize from 'sequelize';
-import { DataTypes, Model } from 'sequelize';
-import { IStore } from '../@types/store';
+import * as Sequelize from "sequelize";
+import { DataTypes, Model } from "sequelize";
+import { IStore } from "../@types/store";
 
 export class Store extends Model<IStore> implements IStore {
     declare _id: number;
     declare name?: string;
     declare number?: string;
     declare category?: string;
-    declare phone?: string;
     declare address?: string;
+    declare bank?: string;
     declare latitude?: number;
     declare longitude?: number;
     declare deleted_at?: Date;
@@ -36,12 +36,12 @@ export class Store extends Model<IStore> implements IStore {
                     type: DataTypes.STRING(255),
                     allowNull: true,
                 },
-                phone: {
-                    type: DataTypes.STRING(100),
-                    allowNull: true,
-                },
                 address: {
                     type: DataTypes.STRING(255),
+                    allowNull: true,
+                },
+                bank: {
+                    type: DataTypes.STRING(100),
                     allowNull: true,
                 },
                 latitude: {
@@ -62,23 +62,23 @@ export class Store extends Model<IStore> implements IStore {
                 },
                 created_at: {
                     type: DataTypes.DATE,
-                    defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+                    defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
                     allowNull: false,
                 },
             },
             {
                 sequelize,
-                tableName: 'stores',
-                modelName: 'store',
+                tableName: "stores",
+                modelName: "store",
                 freezeTableName: true,
                 timestamps: false,
                 paranoid: false,
                 indexes: [
                     {
-                        name: 'PRIMARY',
+                        name: "PRIMARY",
                         unique: true,
-                        using: 'BTREE',
-                        fields: ['_id'],
+                        using: "BTREE",
+                        fields: ["_id"],
                     },
                 ],
             }
@@ -86,5 +86,4 @@ export class Store extends Model<IStore> implements IStore {
 
         return Store;
     }
-
 }
