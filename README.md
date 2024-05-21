@@ -1,6 +1,6 @@
 ![header](https://github.com/team-culfare/YWC-FE/blob/develop/public/thumbnail.png?raw=true)
 
-<a href = "https://youthwelfare.kr/"><img src="https://img.shields.io/badge/Project Website-blue?style=flat-square&logo=&logoColor=white"/></a>
+<a href = "https://ywc.wavers.kr/"><img src="https://img.shields.io/badge/Project Website-blue?style=flat-square&logo=&logoColor=white"/></a>
 
 ### 🔎 서비스 개요
 
